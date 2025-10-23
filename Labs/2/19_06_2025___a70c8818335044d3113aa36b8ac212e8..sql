@@ -6,17 +6,17 @@ GO
 ********************************************************************************/
 IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'Northwind')
 BEGIN
-	ALTER DATABASE [Northwind] SET OFFLINE WITH ROLLBACK IMMEDIATE;
-	ALTER DATABASE [Northwind] SET ONLINE;
-	DROP DATABASE [Northwind];
+	ALTER DATABASE [DBI202_LAB2] SET OFFLINE WITH ROLLBACK IMMEDIATE;
+	ALTER DATABASE [DBI202_LAB2] SET ONLINE;
+	DROP DATABASE [DBI202_LAB2];
 END
 
 GO
 
-CREATE DATABASE [Northwind]
+CREATE DATABASE [DBI202_LAB2]
 GO
 
-USE [Northwind]
+USE [DBI202_LAB2]
 GO
 /****** Object:  Table [dbo].[Categories]    Script Date: 2/25/2025 8:30:52 AM ******/
 SET ANSI_NULLS ON
