@@ -208,3 +208,32 @@ CREATE VIEW [PassWithASeat] AS
             Airlines ON FlightNums.AirlineID = Airlines.AirlineID
 GO
 
+CREATE PROCEDURE dbo.NewPassenger
+        @FirstName NVARCHAR(MAX),
+        @LastName NVARCHAR(MAX),
+        @Email NVARCHAR(255),
+        @PassportNum NVARCHAR(255)
+    AS
+    BEGIN
+        INSERT INTO [Passengers] (PassengerID, FirstName, LastName, Email, PassportNum)
+            VALUES (NEWID(), @FirstName, @LastName, @Email, @PassportNum)
+    END;
+GO
+
+CREATE TRIGGER trg_prevent_update_on_transactions ON [Transactions]
+        AFTER UPDATE
+    AS
+        BEGIN
+            PRINT 'Updating existing data is not allowed on Transactions table.';
+            ROLLBACK TRANSACTION;
+        END;
+GO
+
+CREATE TRIGGER trg_prevent_update_on_booking ON [Booking]
+        AFTER UPDATE
+    AS
+        BEGIN
+            PRINT 'Updating existing data is not allowed on Booking table';
+            ROLLBACK TRANSACTION;
+        END;
+GO
