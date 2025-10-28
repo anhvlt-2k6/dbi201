@@ -19,7 +19,7 @@ CREATE TABLE [Routes] (
 	[RouteID] UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWSEQUENTIALID(),
 	[ArrICAO] VARCHAR(4) NOT NULL,
 	[DepartICAO] VARCHAR(4) NOT NULL,
-	[Distance] FLOAT NOT NULL
+	[Distance] FLOAT NOT NULL,
 	CONSTRAINT fk_routes_airports_arr FOREIGN KEY (ArrICAO) REFERENCES Airports(ApID),
 	CONSTRAINT fk_routes_airports_depart FOREIGN KEY (DepartICAO) REFERENCES Airports(ApID)
 );
@@ -66,7 +66,7 @@ CREATE TABLE [Seats] (
 	[Description] NVARCHAR(MAX),
 	[Price] MONEY NOT NULL,
 	[Seat] VARCHAR(5) NOT NULL,
-	[isOccupied] BIT NOT NULL
+	[isOccupied] BIT NOT NULL,
 	CONSTRAINT fk_seats_flightinstances FOREIGN KEY (FlightID) REFERENCES FlightInstances(FlightID)
 );
 
