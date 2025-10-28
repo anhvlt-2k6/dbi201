@@ -53,11 +53,11 @@ INSERT INTO [FlightNums] (FlightNum, RouteID, AirlineID)
             ('DAL3329', '689b6b4c-a89c-4008-bc0e-129369ea64f9', 'DAL');
 
 INSERT INTO [FlightInstances] (FlightID, [Status], DepartTime, ArrTime, AcID, FlightNum)
-    VALUES ('970be60c-3704-491c-b2d4-2466e84e4e5d', 'In scheduled', GETDATE(), GETDATE() + 1, 'A333', 'ACA125'),
-           ('5dc7cd4b-9ef5-4019-9df7-0b87fe2ceb83', 'In scheduled', GETDATE(), GETDATE() + 1, 'A359', 'UAL335'),
-           ('67f8ae75-dc12-4848-a755-9748759d0f22', 'In scheduled', GETDATE(), GETDATE() + 1, 'B77L', 'DAL3301'),
-           ('bf28e263-063b-4689-86ed-073e0842a62d', 'In scheduled', GETDATE(), GETDATE() + 1, 'B77L', 'UAL787'),
-           ('b0e415c3-75ad-46d8-8bea-874c311e5211', 'In scheduled', GETDATE(), GETDATE() + 1, 'A359', 'UAL787');
+    VALUES ('970be60c-3704-491c-b2d4-2466e84e4e5d', 'In scheduled', GETDATE(), DATEADD(day, 1, GETDATE()), 'A333', 'ACA125'),
+           ('5dc7cd4b-9ef5-4019-9df7-0b87fe2ceb83', 'In scheduled', GETDATE(), DATEADD(day, 1, GETDATE()), 'A359', 'UAL335'),
+           ('67f8ae75-dc12-4848-a755-9748759d0f22', 'In scheduled', GETDATE(), DATEADD(day, 1, GETDATE()), 'B77L', 'DAL3301'),
+           ('bf28e263-063b-4689-86ed-073e0842a62d', 'In scheduled', GETDATE(), DATEADD(day, 1, GETDATE()), 'B77L', 'UAL787'),
+           ('b0e415c3-75ad-46d8-8bea-874c311e5211', 'In scheduled', GETDATE(), DATEADD(day, 1, GETDATE()), 'A359', 'UAL787');
 
 INSERT INTO [Seats] (SeatID, FlightID, Description, Price, Seat, isOccupied)
     VALUES  ('dcb5b909-fc7f-4c05-86c0-8a1888fc4d82', '970be60c-3704-491c-b2d4-2466e84e4e5d', '', 20, 'A13', 1),
@@ -77,6 +77,4 @@ INSERT INTO [Transactions] (TransactionID, Amount, PaymentMethod, PaymentTime, i
 INSERT INTO [Booking] (BookingID, SeatID, TransactionID, PassengerID)
     VALUES  ('66ca88ce-1a7b-4b13-83ce-f894685e84fa', 'dcb5b909-fc7f-4c05-86c0-8a1888fc4d82', '9964422e-011c-4ab6-b389-ce2d41e552ef', '28d71fa5-3364-44df-ab76-0c89681370ff'),
             ('c8ae9605-541d-4016-b233-1714bd85d6ee', 'd9382b0d-5d35-4bd6-a803-4c4eb3e39b0b', 'a2c92b1a-d1b3-43a4-8c28-8b5ff25e974f', 'a9e7da79-4a3b-4b34-a672-9783105ba000'),
-            ('9b931a8b-560d-4eff-9920-4f981796a30b', '22b89f6c-8d4e-43ba-a1eb-056b77623179', '7288f438-83e8-4522-a30e-4ada45827e1d', '2719db4c-174e-482b-b456-4c03257bc300'),
-            ('5e7e9bf1-4e07-4c13-8fd3-3b3161bca940', '3b8d4c03-ec92-403a-a234-6fabd2136f94', '94bd690a-b955-44d4-bf51-ef5fcb396bb2', 'c0407078-8953-46c3-8b7d-33fa5c3eb242'),
-            ('dfd1e4a7-58b9-412a-9b94-da5cdf77a57f', '6f1516d1-c70c-4edb-b574-0eaf35ee8600', 'b43b4ce4-c6dd-4320-ac76-ca17c746cb53', '2126e4eb-3402-470c-bd57-a4786c15b17e');
+            ('9b931a8b-560d-4eff-9920-4f981796a30b', '22b89f6c-8d4e-43ba-a1eb-056b77623179', '7288f438-83e8-4522-a30e-4ada45827e1d', '2719db4c-174e-482b-b456-4c03257bc300');
