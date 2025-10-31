@@ -208,7 +208,7 @@ CREATE VIEW [PassWithASeat] AS
             Airlines ON FlightNums.AirlineID = Airlines.AirlineID
 GO
 
-CREATE PROCEDURE dbo.NewPassenger
+CREATE PROCEDURE NewPassenger
         @FirstName NVARCHAR(MAX),
         @LastName NVARCHAR(MAX),
         @Email NVARCHAR(255),
@@ -220,6 +220,20 @@ CREATE PROCEDURE dbo.NewPassenger
     END;
 GO
 
+CREATE PROCEDURE BookNewFlight
+        @Firstname NVARCHAR(MAX),
+        @LastName NVARCHAR(MAX),
+        @Email NVARCHAR(255),
+        @PassportNum NVARCHAR(255),
+        @FlightNum VARCHAR(7),
+        @Seat VARCHAR(5),
+        @Price MONEY
+    AS
+    BEGIN
+
+    END;
+GO
+
 CREATE TRIGGER trg_prevent_update_on_transactions ON [Transactions]
         AFTER UPDATE
     AS
@@ -228,6 +242,8 @@ CREATE TRIGGER trg_prevent_update_on_transactions ON [Transactions]
             ROLLBACK TRANSACTION;
         END;
 GO
+
+
 
 CREATE TRIGGER trg_prevent_update_on_booking ON [Booking]
         AFTER UPDATE
