@@ -237,7 +237,6 @@ CREATE PROCEDURE BookNewFlight
               WHERE SeatID = @SeatID AND isOccupied = 1
         ) BEGIN
             PRINT 'Seat is occupied'
-            ROLLBACK TRANSACTION
             RETURN;
         END
 
