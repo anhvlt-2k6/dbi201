@@ -181,7 +181,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE VIEW [AvailSeatPerAirlines] AS
-    SELECT Airlines.AirlineName, FlightNums.FlightNum, FlightInstances.DepartTime, FlightInstances.ArrTime, Seats.Seat, Seats.Price, Routes.ArrICAO, Routes.DepartICAO
+    SELECT Seats.SeatID, Airlines.AirlineName, FlightNums.FlightNum, FlightInstances.DepartTime, FlightInstances.ArrTime, Seats.Seat, Seats.Price, Routes.ArrICAO, Routes.DepartICAO
     FROM  Seats INNER JOIN
             FlightInstances ON Seats.FlightID = FlightInstances.FlightID INNER JOIN
             FlightNums ON FlightInstances.FlightNum = FlightNums.FlightNum INNER JOIN
@@ -198,7 +198,7 @@ CREATE VIEW [AirlinesPerDestination] AS
 GO
 
 CREATE VIEW [PassWithASeat] AS
-    SELECT Passengers.FirstName, Passengers.LastName, Seats.Seat, FlightInstances.AcID, FlightInstances.FlightNum, FlightInstances.DepartTime, FlightInstances.ArrTime, Airlines.AirlineName, Routes.DepartICAO, Routes.ArrICAO
+    SELECT Passengers.PassengerID, Passengers.FirstName, Passengers.LastName, Seats.Seat, FlightInstances.AcID, FlightInstances.FlightNum, FlightInstances.DepartTime, FlightInstances.ArrTime, Airlines.AirlineName, Routes.DepartICAO, Routes.ArrICAO
     FROM Passengers INNER JOIN
             Booking ON Passengers.PassengerID = Booking.PassengerID INNER JOIN
             Seats ON Booking.SeatID = Seats.SeatID INNER JOIN
