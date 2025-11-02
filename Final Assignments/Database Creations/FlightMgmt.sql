@@ -242,7 +242,7 @@ CREATE PROCEDURE BookNewFlight
         END
 
         DECLARE @transactionID UNIQUEIDENTIFIER;
-        SET @transactionID = NEWSEQUENTIALID();
+        SET @transactionID = NEWID();
 
         IF EXISTS (
             SELECT SeatID, Price
@@ -263,7 +263,7 @@ CREATE PROCEDURE BookNewFlight
           WHERE SeatID = @SeatID;
 
         DECLARE @bookingID UNIQUEIDENTIFIER;
-        SET @bookingID = NEWSEQUENTIALID();
+        SET @bookingID = NEWID();
 
         INSERT INTO [Booking] (BookingID, TransactionID, PassengerID, SeatID)
           VALUES (@bookingID, @transactionID, @PassengerID, @SeatID);
