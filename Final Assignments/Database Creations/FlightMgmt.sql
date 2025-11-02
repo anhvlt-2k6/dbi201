@@ -221,16 +221,52 @@ CREATE PROCEDURE NewPassenger
 GO
 
 CREATE PROCEDURE BookNewFlight
-        @Firstname NVARCHAR(MAX),
-        @LastName NVARCHAR(MAX),
-        @Email NVARCHAR(255),
-        @PassportNum NVARCHAR(255),
-        @FlightNum VARCHAR(7),
-        @Seat VARCHAR(5),
-        @Price MONEY
+        @PassengerID UNIQUEIDENTIFIER,
+        @SeatID UNIQUEIDENTIFIER,
+        @PriceAsInput MONEY
     AS
     BEGIN
+        -- Step-by-step:
+        -- 1. Compare the @PriceAsInput with the seat id price, and check if the seat is occupied
+        -- 2. If the price is not equal or seat is occupied, put new value into transaction but isSuccess as failed, otherwise successed
+        -- 3. In case booking is success, write to booking new instance, and seatid to isOccupied
 
+        IF EXISTS (
+            SELECT SeatID, isOccupied
+              FROM Seats
+              WHERE SeatID = @SeatID AND isOccupied = 1
+        ) BEGIN
+            PRINT 'Seat is occupied'
+            ROLLBACK TRANSACTION
+            RETURN;
+        END
+
+        DECLARE @transactionID UNIQUEIDENTIFIER;
+        SET @transactionID = NEWSEQUENTIALID();
+
+        IF EXISTS (
+            SELECT SeatID, Price
+              FROM Seats
+              WHERE SeatID = @SeatID AND Price <> @PriceAsInput
+        ) BEGIN
+            PRINT 'Invalid Price for current seat'
+            INSERT INTO Transactions (TransactionID, PaymentTime, PaymentMethod, Amount, isSuccess)
+              VALUES (@transactionID, GETDATE(), 'Default', @PriceAsInput, 0);
+            RETURN;
+        END
+
+        INSERT INTO Transactions (TransactionID ,PaymentTime, PaymentMethod, Amount, isSuccess)
+              VALUES (@transactionID, GETDATE(), 'Default', @PriceAsInput, 1);
+        
+        UPDATE Seats
+          SET isOccupied = 1
+          WHERE SeatID = @SeatID;
+
+        DECLARE @bookingID UNIQUEIDENTIFIER;
+        SET @bookingID = NEWSEQUENTIALID();
+
+        INSERT INTO [Booking] (BookingID, TransactionID, PassengerID, SeatID)
+          VALUES (@bookingID, @transactionID, @PassengerID, @SeatID);
     END;
 GO
 
@@ -242,8 +278,6 @@ CREATE TRIGGER trg_prevent_update_on_transactions ON [Transactions]
             ROLLBACK TRANSACTION;
         END;
 GO
-
-
 
 CREATE TRIGGER trg_prevent_update_on_booking ON [Booking]
         AFTER UPDATE
