@@ -1,12 +1,17 @@
-CREATE FUNCTION F1 (@diag NVARCHAR(255), @year INT)
-RETURN INT
-AS
-BEGIN
+CREATE FUNCTION dbo.F1 (@Diagnosis NVARCHAR(255), @Year INT)
+    RETURNS INT
+    AS BEGIN
+        DECLARE @Num INT;
 
-END;
+        SELECT @Num =
+            COUNT(*)
+        FROM
+        (
+            SELECT DISTINCT PatientID
+            FROM dbo.MedicalRecords
+            WHERE Diagnosis = @Diagnosis
+            AND DATEPART(YEAR, RecordDate) = @Year
+        ) AS t;
 
-SELECT Diagnosis, COUNT(RecordID) AS CountRID
-    FROM MedicalRecords AS m
-    WHERE YEAR(m.RecordDate) IN ('2019', '2020', '2021')
-    GROUP BY Diagnosis
-    
+        RETURN ISNULL(@Num, 0);
+    END;
