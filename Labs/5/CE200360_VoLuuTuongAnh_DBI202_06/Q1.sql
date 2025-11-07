@@ -1,11 +1,9 @@
-CREATE TABLE [Employee] (
-    [EmpID] CHAR(9) PRIMARY KEY,
-    [FirstName] VARCHAR(35),
-    [LastName] VARCHAR(35),
-    [Phone] CHAR(15),
-    [Salary] FLOAT,
-    [Address] VARCHAR(50)
-);
+/*
+Note that
+DO NOT USE CONSTRAINT
+DO NOT USE NOT NULL, UNIQUE
+[Employee] (1) ----- (m) [Department] means only one from [Employee] table can reference to [Department], but multiple [Department] can reference to [Employee]
+*/
 
 CREATE TABLE [Department] (
     [DeptID] CHAR(9) PRIMARY KEY,
@@ -13,8 +11,18 @@ CREATE TABLE [Department] (
     [Region] VARCHAR(50),
     [ManagerID] CHAR(9),
     [DeptAddr] VARCHAR(50),
-    [EmpID] CHAR(9) NOT NULL,
-    CONSTRAINT fk_department_employee FOREIGN KEY (EmpID) REFERENCES Employee(EmpID)
+    [EmpID] CHAR(9)
+);
+
+CREATE TABLE [Employee] (
+    [EmpID] CHAR(9) PRIMARY KEY,
+    [FirstName] VARCHAR(35),
+    [LastName] VARCHAR(35),
+    [Phone] CHAR(15),
+    [Salary] FLOAT,
+    [Address] VARCHAR(50),
+	[DeptID] CHAR(9),
+	FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
 );
 
 CREATE TABLE [Project] (
@@ -24,11 +32,11 @@ CREATE TABLE [Project] (
 );
 
 CREATE TABLE [WorkIn] (
-    [EmpID] CHAR(9) NOT NULL,
-    [ProjectID] CHAR(9) NOT NULL,
+    [EmpID] CHAR(9),
+    [ProjectID] CHAR(9),
     [StartDate] DATE,
     [EndDate] DATE,
-    CONSTRAINT pk_workin PRIMARY KEY (EmpID, ProjectID),
-    CONSTRAINT fk_workin_employee FOREIGN KEY (EmpID) REFERENCES Employee(EmpID),
-    CONSTRAINT fk_workin_project FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID)
+    PRIMARY KEY (EmpID, ProjectID),
+    FOREIGN KEY (EmpID) REFERENCES Employee(EmpID),
+    FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID)
 );

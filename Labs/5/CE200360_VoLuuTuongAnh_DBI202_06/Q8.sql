@@ -3,28 +3,14 @@ CREATE OR ALTER TRIGGER trgDelayEndSemester
    AFTER UPDATE
 AS 
 BEGIN
-	DECLARE @id INT;
-	DECLARE @oldBeginDate DATE;
-	
-	SET @Id = (
-		SELECT DISTINCT Id
-			FROM inserted
-	)
-
-	SET @oldBeginDate = (
-		SELECT BeginDate
-			FROM Semesters
-			WHERE Id = @Id
-	)
-
-	IF EXISTS (
-		SELECT 1
-			FROM inserted AS i
-				JOIN Semesters AS s ON i.Id = s.Id AND i.EndDate <= s.EndDate
-	)
+	SET NOCOUNT ON;
+	IF UPDATE (BeginDate)
 	BEGIN
-		UPDATE [Semesters]
-			SET BeginDate = @oldBeginDate
-			WHERE Id = @id
+		UPDATE s
+			SET s.EndDate = d.EndDate
+			FROM Semesters AS s
+				JOIN inserted AS i ON s.Id = i.Id
+				JOIN deleted AS d ON s.Id = d.Id
+			WHERE i.EndDate < d.EndDate
 	END
-END
+END;
